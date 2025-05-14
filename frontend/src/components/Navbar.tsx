@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     HiBars3BottomRight,
     HiOutlineShoppingBag,
@@ -6,8 +7,9 @@ import {
 import { IoStorefront } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
+import CartDrawer from './layout/CartDrawer';
 
-const NAVLINKS = [
+const CATEGORIES = [
     { name: 'men', path: '#' },
     { name: 'women', path: '#' },
     { name: 'topwear', path: '#' },
@@ -20,6 +22,9 @@ type NAVLINK = {
 };
 
 const Navbar = () => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    const toggleDrawer = () => setIsOpen((prev) => !prev);
     return (
         <>
             <nav className='container mx-auto flex items-center justify-between py-4 px-6'>
@@ -29,7 +34,7 @@ const Navbar = () => {
                     </Link>
                 </aside>
                 <section className='hidden md:flex space-x-6'>
-                    {NAVLINKS.map(({ name, path }: NAVLINK) => (
+                    {CATEGORIES.map(({ name, path }: NAVLINK) => (
                         <Link
                             key={name}
                             to={path}
@@ -46,7 +51,10 @@ const Navbar = () => {
                     >
                         {<HiOutlineUser className='h-6 w-6 text-gray-700' />}
                     </Link>
-                    <button className='relative hover:text-black'>
+                    <button
+                        onClick={toggleDrawer}
+                        className='relative hover:text-black'
+                    >
                         <HiOutlineShoppingBag className='h-6 w-6 text-gray-700' />
                         <span className='absolute -top-1 bg-brand-primary text-white text-sm rounded-full px-2 py-0.5'>
                             4
@@ -58,6 +66,10 @@ const Navbar = () => {
                     </button>
                 </aside>
             </nav>
+            <CartDrawer
+                isOpen={isOpen}
+                toggleDrawer={toggleDrawer}
+            />
         </>
     );
 };
