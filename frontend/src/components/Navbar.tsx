@@ -7,7 +7,7 @@ import {
 import { IoStorefront } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
-import CartDrawer from './layout/CartDrawer';
+import CartDrawer from '../features/cart/CartDrawer';
 
 const CATEGORIES = [
     { name: 'men', path: '#' },
