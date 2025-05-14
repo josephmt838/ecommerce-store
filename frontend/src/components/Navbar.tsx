@@ -6,25 +6,19 @@ import {
 } from 'react-icons/hi2';
 import { IoStorefront } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
-import SearchBar from './SearchBar';
+import { CATEGORIES } from '../data/categories';
 import CartDrawer from '../features/cart/CartDrawer';
-
-const CATEGORIES = [
-    { name: 'men', path: '#' },
-    { name: 'women', path: '#' },
-    { name: 'topwear', path: '#' },
-    { name: 'bottomwear', path: '#' },
-];
-
-type NAVLINK = {
-    name: string;
-    path: string;
-};
+import type { NAVLINK } from '../types';
+import MobileNavbar from './MobileNavbar';
+import SearchBar from './SearchBar';
 
 const Navbar = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [cartDrawerOpen, setCartDrawerOpen] = useState(false);
+    const [navDrawerOpen, setNavDrawerOpen] = useState(false);
 
-    const toggleDrawer = () => setIsOpen((prev) => !prev);
+    const toggleNavDrawer = () => setNavDrawerOpen((prev) => !prev);
+
+    const toggleCartDrawer = () => setCartDrawerOpen((prev) => !prev);
     return (
         <>
             <nav className='container mx-auto flex items-center justify-between py-4 px-6'>
@@ -49,26 +43,35 @@ const Navbar = () => {
                         to={'#'}
                         className='hover:text-black'
                     >
-                        {<HiOutlineUser className='h-6 w-6 text-gray-700' />}
+                        {
+                            <HiOutlineUser className='h-6 w-6 text-gray-700 hover:cursor-pointer' />
+                        }
                     </Link>
                     <button
-                        onClick={toggleDrawer}
+                        onClick={toggleCartDrawer}
                         className='relative hover:text-black'
                     >
-                        <HiOutlineShoppingBag className='h-6 w-6 text-gray-700' />
+                        <HiOutlineShoppingBag className='h-6 w-6 text-gray-700 hover:cursor-pointer' />
                         <span className='absolute -top-1 bg-brand-primary text-white text-sm rounded-full px-2 py-0.5'>
                             4
                         </span>
                     </button>
                     <SearchBar />
-                    <button className='md:hidden'>
-                        <HiBars3BottomRight className='h-6 w-6 text-gray-700' />
+                    <button
+                        onClick={toggleNavDrawer}
+                        className='md:hidden'
+                    >
+                        <HiBars3BottomRight className='h-6 w-6 text-gray-700 hover:cursor-pointer hover:text-gray-500' />
                     </button>
                 </aside>
             </nav>
             <CartDrawer
-                isOpen={isOpen}
-                toggleDrawer={toggleDrawer}
+                isOpen={cartDrawerOpen}
+                toggleDrawer={toggleCartDrawer}
+            />
+            <MobileNavbar
+                toggleNavDrawer={toggleNavDrawer}
+                navDrawerOpen={navDrawerOpen}
             />
         </>
     );

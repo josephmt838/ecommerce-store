@@ -34,7 +34,7 @@ const SearchBar = () => {
                             type='submit'
                             className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800'
                         >
-                            <HiMagnifyingGlass className='h-6 w-6' />
+                            <HiMagnifyingGlass className='h-6 w-6 hover:cursor-pointer' />
                         </button>
                     </section>
                     <button
@@ -42,12 +42,12 @@ const SearchBar = () => {
                         onClick={toggleSearch}
                         className='absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600 hover:text-gray-800'
                     >
-                        <HiMiniXMark className='h-6 w-6' />
+                        <HiMiniXMark className='h-6 w-6 hover:cursor-pointer' />
                     </button>
                 </form>
             ) : (
                 <button onClick={toggleSearch}>
-                    <HiMagnifyingGlass className='h-6 w-6' />
+                    <HiMagnifyingGlass className='h-6 w-6 hover:cursor-pointer' />
                 </button>
             )}
         </section>
