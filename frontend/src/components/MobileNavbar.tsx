@@ -25,6 +25,7 @@ const MobileNavbar = ({ toggleNavDrawer, navDrawerOpen }: Props) => {
                 <nav className='space-y-4'>
                     {CATEGORIES.map(({ name, path }: NAVLINK) => (
                         <Link
+                            key={name}
                             to={path}
                             onClick={toggleNavDrawer}
                             className='block text-gray-600 uppercase hover:text-black'

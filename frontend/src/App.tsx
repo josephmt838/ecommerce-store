@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AuthLayout from './components/AuthLayout';
 import UserLayout from './components/layout/UserLayout';
+import Home from './pages/Home';
 
 const App = () => {
     return (
@@ -9,7 +10,12 @@ const App = () => {
                 <Route
                     path='/'
                     element={<UserLayout />}
-                />
+                >
+                    <Route
+                        index
+                        element={<Home />}
+                    />
+                </Route>
                 <Route
                     path='/auth'
                     element={<AuthLayout />}
