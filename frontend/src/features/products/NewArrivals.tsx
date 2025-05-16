@@ -1,4 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+    useEffect,
+    useRef,
+    useState,
+    type MouseEvent,
+    type MouseEventHandler,
+} from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import products from '../../data/products';
@@ -7,7 +13,7 @@ const NewArrivals = () => {
     const scrollRef = useRef<HTMLElement>(document.createElement('div'));
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [startX, setStartX] = useState<number>(0);
-    const [scrollLeft, setScrollLeft] = useState<boolean>(false);
+    const [scrollLeft, setScrollLeft] = useState<number>(0);
     const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
     const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
     const newArrivals = products.slice(0, 8);
@@ -35,17 +41,25 @@ const NewArrivals = () => {
         }
     };
 
-    const handleMouseDown = (e: MouseEvent) => {
+    const handleMouseDown = (e: MouseEvent<HTMLElement>) => {
         setIsDragging(() => true);
 
         if (scrollRef?.current?.offsetLeft) {
             setStartX(() => e.pageX - scrollRef.current.offsetLeft || 0);
+            setScrollLeft(scrollRef.current?.scrollLeft);
         }
     };
 
-    const handleMouseMove = () => {};
+    const handleMouseMove = (e: MouseEvent<HTMLElement>) => {
+        if (!isDragging) return;
+        const x = e.pageX - scrollRef.current.offsetLeft;
+        const walk = x - startX;
+        scrollRef.current.scrollLeft = scrollLeft - walk;
+    };
 
-    const handleMouseUpOrLeave = () => {};
+    const handleMouseUpOrLeave: MouseEventHandler<HTMLElement> = () => {
+        setIsDragging(() => false);
+    };
 
     useEffect(() => {
         const container = scrollRef.current;
@@ -96,7 +110,9 @@ const NewArrivals = () => {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUpOrLeave}
                 onMouseLeave={handleMouseUpOrLeave}
-                className='container mx-auto overflow-x-scroll flex space-x-6 relative'
+                className={`container mx-auto overflow-x-scroll flex space-x-6 relative ${
+                    isDragging ? 'cursor-grabbing' : 'cursor-grab'
+                }`}
             >
                 {newArrivals.map((product) => (
                     <section
@@ -107,6 +123,7 @@ const NewArrivals = () => {
                             src={product.images[0]?.url}
                             alt={product.images[0]?.altText || product.name}
                             className='w-full h-[500px] object-cover rounded-lg'
+                            draggable={false}
                         />
                         <section className='absolute bottom-0 left-0 right-0 bg-black opacity-75 backdrop-blur-xs text-white p-4 rounded-lg'>
                             <Link
